@@ -126,7 +126,7 @@ static struct device_attribute *ft5x0x_attrs[] = {
 };
 
 static struct tpd_driver_t tpd_device_driver = {
-	.tpd_device_name = "FT5x0x",
+	.tpd_device_name = "ft3427_zaw875",
 	.tpd_local_init = tpd_local_init,
 	.suspend = tpd_suspend,
 	.resume = tpd_resume,
