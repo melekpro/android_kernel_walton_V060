@@ -66,44 +66,35 @@ static void lcm_get_params(LCM_PARAMS *params)
 	params->width  = FRAME_WIDTH;
 	params->height = FRAME_HEIGHT;
 
-	// enable tearing-free
-	params->dbi.te_mode 			= LCM_DBI_TE_MODE_DISABLED;
-	params->dbi.te_edge_polarity		= LCM_POLARITY_RISING;
-
-	params->dsi.mode   = SYNC_PULSE_VDO_MODE;	//SYNC_PULSE_VDO_MODE;
-
-	// DSI
-	/* Command mode setting */
-	params->dsi.LANE_NUM			= LCM_FOUR_LANE;
-	//The following defined the fomat for data coming from LCD engine. 
-	params->dsi.data_format.color_order 	= LCM_COLOR_ORDER_RGB;
-	params->dsi.data_format.trans_seq   	= LCM_DSI_TRANS_SEQ_MSB_FIRST; 
-	params->dsi.data_format.padding     	= LCM_DSI_PADDING_ON_LSB;
-	params->dsi.data_format.format      	= LCM_DSI_FORMAT_RGB888;
-	// Highly depends on LCD driver capability.
-	// Not support in MT6573
-	params->dsi.packet_size=256;
-	// Video mode setting		
-	params->dsi.intermediat_buffer_num 	= 2;
-	params->dsi.PS=LCM_PACKED_PS_24BIT_RGB888;
-        params->dsi.word_count=720 * 3;
-	params->dsi.vertical_sync_active				= 4;//5
-	params->dsi.vertical_backporch					= 12;
-	params->dsi.vertical_frontporch					= 15;
-	params->dsi.vertical_active_line				= FRAME_HEIGHT; 
-	params->dsi.horizontal_sync_active				= 40;
-	params->dsi.horizontal_backporch				= 40;//66
-	params->dsi.horizontal_frontporch				= 40;//70
-	//params->dsi.horizontal_blanking_pixel		       		= 60;
-	params->dsi.horizontal_active_pixel		       		= FRAME_WIDTH;
-	// Bit rate calculation
-
-	params->dsi.PLL_CLOCK=205;//227;//254;//254//247  240
+  	param->dsi.data_format.format = 3;
+  	param->dsi.vertical_frontporch_for_low_power = 256;
+  	param->dsi.horizontal_backporch = 5;
+  	param->dsi.horizontal_frontporch = 9;
+ 	param->type = 2;
+  	param->dsi.ufoe_params.lr_mode_en = 264;
+  	param->dsi.VC_NUM = 2;
+  	param->dsi.packet_size = 2;
+  	param->dsi.vertical_sync_active = 2;
+  	param->dsi.vertical_backporch = 2;
+  	param->dsi.horizontal_sync_active = 2;
+  	param->io_select_mode = 720;
+  	param->dsi.horizontal_frontporch_byte = 720;
+  	param->dbi.port = 1280;
+  	param->dsi.horizontal_active_pixel = 1280;
+  	param->dbi.te_vs_width_cnt_div = 0;
+  	param->dbi.serial.cs_polarity = 0;
+  	param->dsi.intermediat_buffer_num = 0;
+  	param->dsi.PS = 0;
+  	param->dsi.word_count = 0;
+  	param->dsi.edp_panel = 0;
+  	param->dsi.horizontal_bllp = 50;
+  	param->dsi.line_byte = 50;
+  	param->dsi.horizontal_sync_active_byte = 50;
 }
 
 static unsigned int lcm_init_resgister(void)
 {
-     unsigned int data_array[16];
+    unsigned int data_array[16];
   
     data_array[0] = 0x00043902;
     data_array[1] = 0x9483ffb9;
@@ -245,7 +236,35 @@ static void lcm_suspend(void)
 	MDELAY(120);
 }
 
-static unsigned int lcm_compare_id(void);
+static unsigned int lcm_compare_id(void) {
+	int array[4];
+	char buffer[5];
+	char id_high=0;
+	char id_low=0;
+	int id1=0;
+	int id2=0;
+
+	SET_RESET_PIN(1);
+	MDELAY(10);
+	SET_RESET_PIN(0);
+	MDELAY(10);
+	SET_RESET_PIN(1);
+	MDELAY(120);
+	
+	array[0] = 0x43902;
+	array[1] = 0x9483FFB9;
+	dsi_set_cmdq(array, 2, 1);
+	
+	array[0] = 0x33700;
+	dsi_set_cmdq(array, 1, 1);
+	read_reg_v2(4, buffer, 1);
+
+	id1 = (id_high<<8) | (buffer<<16) | id_low;
+
+	printk(" %s id1 = 0x%04x, id2 = 0x%04x\n", __func__, id1,id2);
+	
+	return (0x83940D == id1)?1:0;
+}
 
 static void lcm_resume(void)
 {
@@ -261,7 +280,7 @@ LCM_DRIVER hx8394d_bld_cmi =
 	.init           = lcm_init,
 	.suspend        = lcm_suspend,
 	.resume         = lcm_resume,	
-//	.compare_id     = lcm_compare_id,	
+	.compare_id     = lcm_compare_id,	
 //	.esd_check      = lcm_esd_check,	
 //	.esd_recover    = lcm_esd_recover,	
 //	.update         = lcm_update,
