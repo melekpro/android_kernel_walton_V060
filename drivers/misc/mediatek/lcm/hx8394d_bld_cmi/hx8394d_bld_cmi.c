@@ -51,7 +51,7 @@ static unsigned int lcm_esd_test = FALSE;      ///only for ESD test
 #define write_regs(addr, pdata, byte_nums)					lcm_util.dsi_write_regs(addr, pdata, byte_nums)
 #define read_reg(cmd)											lcm_util.dsi_dcs_read_lcm_reg(cmd)
 #define read_reg_v2(cmd, buffer, buffer_size)				lcm_util.dsi_dcs_read_lcm_reg_v2(cmd, buffer, buffer_size)
-
+typedef params param;
 /* LCM Driver Implementations */
 
 static void lcm_set_util_funcs(const LCM_UTIL_FUNCS *util)
@@ -66,7 +66,7 @@ static void lcm_get_params(LCM_PARAMS *params)
 	params->width  = FRAME_WIDTH;
 	params->height = FRAME_HEIGHT;
 
-  	param->dsi.data_format.format = 3;
+  	params->dsi.data_format.format = 3;
   	param->dsi.vertical_frontporch_for_low_power = 256;
   	param->dsi.horizontal_backporch = 5;
   	param->dsi.horizontal_frontporch = 9;
