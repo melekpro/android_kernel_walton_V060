@@ -260,7 +260,7 @@ static unsigned int lcm_compare_id(void) {
 	dsi_set_cmdq(array, 1, 1);
 	read_reg_v2(4, buffer, 1);
 
-	id1 = (id_high<<8) | (buffer<<16) | id_low;
+	id1 = (id_high<<8) | id_low;
 
 	printk(" %s id1 = 0x%04x, id2 = 0x%04x\n", __func__, id1,id2);
 	
