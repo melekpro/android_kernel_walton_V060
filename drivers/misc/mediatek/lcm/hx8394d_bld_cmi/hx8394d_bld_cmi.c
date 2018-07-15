@@ -64,33 +64,33 @@ static void lcm_get_params(LCM_PARAMS *params)
 	memset(params, 0, sizeof(LCM_PARAMS));
 	params->type   = LCM_TYPE_DSI;
 	params->width  = FRAME_WIDTH;
-	typedef params param;
+	
 	params->height = FRAME_HEIGHT;
 
   	params->dsi.data_format.format = 3;
-  	param->dsi.vertical_frontporch_for_low_power = 256;
-  	param->dsi.horizontal_backporch = 5;
-  	param->dsi.horizontal_frontporch = 9;
- 	param->type = 2;
-  	param->dsi.ufoe_params.lr_mode_en = 264;
-  	param->dsi.VC_NUM = 2;
-  	param->dsi.packet_size = 2;
-  	param->dsi.vertical_sync_active = 2;
-  	param->dsi.vertical_backporch = 2;
-  	param->dsi.horizontal_sync_active = 2;
-  	param->io_select_mode = 720;
-  	param->dsi.horizontal_frontporch_byte = 720;
-  	param->dbi.port = 1280;
-  	param->dsi.horizontal_active_pixel = 1280;
-  	param->dbi.te_vs_width_cnt_div = 0;
-  	param->dbi.serial.cs_polarity = 0;
-  	param->dsi.intermediat_buffer_num = 0;
-  	param->dsi.PS = 0;
-  	param->dsi.word_count = 0;
-  	param->dsi.edp_panel = 0;
-  	param->dsi.horizontal_bllp = 50;
-  	param->dsi.line_byte = 50;
-  	param->dsi.horizontal_sync_active_byte = 50;
+  	params->dsi.vertical_frontporch_for_low_power = 256;
+  	params->dsi.horizontal_backporch = 5;
+  	params->dsi.horizontal_frontporch = 9;
+ 	params->type = 2;
+  	params->dsi.ufoe_params.lr_mode_en = 264;
+  	params->dsi.VC_NUM = 2;
+  	params->dsi.packet_size = 2;
+  	params->dsi.vertical_sync_active = 2;
+  	params->dsi.vertical_backporch = 2;
+  	params->dsi.horizontal_sync_active = 2;
+  	params->io_select_mode = 720;
+  	params->dsi.horizontal_frontporch_byte = 720;
+  	params->dbi.port = 1280;
+  	params->dsi.horizontal_active_pixel = 1280;
+  	params->dbi.te_vs_width_cnt_div = 0;
+  	params->dbi.serial.cs_polarity = 0;
+  	params->dsi.intermediat_buffer_num = 0;
+  	params->dsi.PS = 0;
+  	params->dsi.word_count = 0;
+  	params->dsi.edp_panel = 0;
+  	params->dsi.horizontal_bllp = 50;
+  	params->dsi.line_byte = 50;
+  	params->dsi.horizontal_sync_active_byte = 50;
 }
 
 static unsigned int lcm_init_resgister(void)
